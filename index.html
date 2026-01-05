@@ -1,0 +1,284 @@
+
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>週週讀書 - 簡報</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: 'Microsoft JhengHei', 'Noto Sans TC', 'PingFang TC', sans-serif; 
+            background: #f5f7fa;
+            min-height: 100vh;
+            overflow: hidden;
+        }
+        
+        html, body { scroll-behavior: auto; overflow: hidden; }
+        
+        .slides-container {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+        }
+        
+        .slide {
+            position: absolute;
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 0 5vw;
+            top: 0;
+            left: 0;
+            opacity: 0;
+            transition: opacity 0.6s ease-in-out;
+            z-index: 0;
+            pointer-events: none; /* Hide from mouse when inactive */
+        }
+        
+        .slide.active {
+            opacity: 1;
+            z-index: 1;
+            pointer-events: auto;
+        }
+        
+        /* Themes */
+        .slide-theme-cover { 
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f0f23 100%);
+            color: white;
+        }
+        
+        .slide-theme-warm {
+            background: linear-gradient(135deg, #f8f1e9 0%, #d9c2a6 100%);
+        }
+
+        /* Original CSS classes */
+        .cover-title { font-size: 6rem; font-weight: 900; -webkit-background-clip: text; background-clip: text; color: transparent; background-image: linear-gradient(135deg, #ffffff 0%, #f8f1e9 50%, #D2691E 100%); margin: 0; text-shadow: 0 10px 40px rgba(210, 105, 30, 0.4); }
+        .cover-subtitle { font-size: 2.5rem; color: #D2691E; font-weight: 700; margin-top: 1rem; }
+        .cover-icon { font-size: 5rem; margin-bottom: 1rem; }
+        .cover-line { width: 200px; height: 3px; background: linear-gradient(90deg, transparent, #D2691E, transparent); margin: 1rem 0; }
+        
+        .title-main { font-size: 6rem; font-weight: 800; margin-bottom: 1rem; color: #D2691E; background: linear-gradient(45deg, #8B4513 0%, #D2691E 50%, #A0522D 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .title-sub { font-size: 3.5rem; font-weight: 700; margin-bottom: 2rem; color: #5D4037; }
+        .author { font-size: 2.5rem; color: #8B7355; margin-bottom: 3rem; font-style: italic; }
+        .quote { font-size: 2.2rem; font-weight: 500; line-height: 1.5; max-width: 800px; margin-bottom: 2rem; background: rgba(255,255,255,0.7); padding: 2.5rem; border-radius: 20px; color: #4A4A4A; position: relative; }
+        .highlight { color: #D2691E; font-weight: 800; }
+        
+        .key-points { display: flex; flex-direction: column; gap: 1.5rem; max-width: 700px; margin: 0 auto; }
+        .point { font-size: 1.8rem; background: rgba(255,255,255,0.9); padding: 1.8rem 2.5rem; border-radius: 18px; border-left: 5px solid #D2691E; color: #5D4037; }
+
+        .nav-button { position: fixed; width: 60px; height: 60px; background: rgba(210, 105, 30, 0.9); border: none; border-radius: 50%; color: white; font-size: 2rem; cursor: pointer; z-index: 100; bottom: 30px; }
+        #prevBtn { left: 30px; }
+        #nextBtn { right: 30px; }
+        .slide-counter { position: fixed; top: 30px; right: 30px; background: rgba(0,0,0,0.7); color: white; padding: 12px 24px; border-radius: 25px; font-size: 1.3rem; z-index: 100; }
+
+        /* Grouping Tool CSS */
+        .grouping-container { display: flex; gap: 3rem; max-width: 1200px; width: 100%; margin: 0 auto; }
+        .input-section, .result-section { flex: 1; background: rgba(255,255,255,0.85); padding: 2.5rem; border-radius: 20px; max-height: 70vh; overflow-y: auto; text-align: left; }
+        .form-group { margin-bottom: 1.5rem; }
+        .form-group label { display: block; margin-bottom: 0.5rem; font-weight: bold; }
+        .form-group textarea, .form-group input { width: 100%; padding: 0.8rem; font-size: 1rem; border: 1px solid #ccc; border-radius: 8px; }
+        .btn { padding: 1rem 2rem; border: none; border-radius: 8px; font-size: 1.1rem; cursor: pointer; color: white; margin-right: 1rem; }
+        .btn-primary { background: #D2691E; }
+        .btn-secondary { background: #999; }
+        .group-card { background: white; padding: 1rem; margin-bottom: 1rem; border-radius: 8px; border: 1px solid #eee; }
+        .group-title { color: #D2691E; font-weight: bold; margin-bottom: 0.5rem; }
+        
+        .video-content { width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+        .youtube-container { width: 80%; height: 60vh; background: black; }
+        iframe { width: 100%; height: 100%; border: none; }
+    </style>
+</head>
+<body>
+    <div class="slides-container">
+        
+            <section class="slide slide-theme-cover">
+                <div class="cover-page">
+                    <div class="cover-icon">📚</div>
+                    <h1 class="cover-title">週週讀書</h1>
+                    <div class="cover-line"></div>
+                    <div class="cover-subtitle">Presented by Andrew</div>
+                </div>
+            </section>
+
+            <section class="slide slide-theme-warm">
+                <div style="display: flex; align-items: center; justify-content: center; gap: 3rem; max-width: 1200px; width: 100%;">
+                    <div style="flex: 1; text-align: left;">
+                        <h1 class="title-main">我，刀槍不入</h1>
+                        <h2 class="title-sub">從街頭魯蛇到海豹突擊隊，掌控心智、力抗萬難的奇蹟</h2>
+                        <div class="author">全美媒體譽為地表最強男人 <span class="highlight">David Goggins</span></div>
+                        <div class="quote">在「極端痛苦」的困境當中，找到心靈的力量並且勇往直前</div>
+                    </div>
+                    <div style="flex: 1;"><img src="https://im2.book.com.tw/image/getImage?i=https://www.books.com.tw/img/001/097/13/0010971366_bc_01.jpg&v=6531219ck" style="max-width: 480px; height: auto; border-radius: 16px; box-shadow: 0 15px 40px rgba(0,0,0,0.25);"></div>
+                </div>
+            </section>
+
+            <section class="slide slide-theme-warm">
+                <div class="video-content">
+                    <h2 class="title-sub">為什麼這是我心目中第一名的心靈勵志書？｜《我，刀槍不入》</h2>
+                    <div class="youtube-container">
+                        <iframe src="https://www.youtube.com/embed/nS6jMJsb-cw" allowfullscreen></iframe>
+                    </div>
+                </div>
+            </section>
+
+            <section class="slide slide-theme-warm">
+                <h2 class="title-sub">十分鐘夥伴分享</h2>
+                <div class="grouping-container">
+                    <div class="input-section">
+                        <h3>📝 輸入資訊</h3>
+                        <div class="form-group">
+                            <label>人名清單</label>
+                            <textarea id="names" placeholder="Names...">Andrew
+Annie
+Carey
+Eno
+Erin
+Gary
+Honda
+Lynn
+Marty
+Ruby
+Shilo
+Soyu
+Vera
+Vic</textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>分組數量</label>
+                            <input type="number" id="groups" value="5" min="1">
+                        </div>
+                        <div class="button-group">
+                            <button class="btn btn-primary" onclick="randomizeGroups()">🎯 開始分組</button>
+                            <button class="btn btn-secondary" onclick="clearAll()">🗑️ 清空</button>
+                        </div>
+                    </div>
+                    <div class="result-section">
+                        <h3>✅ 分組結果</h3>
+                        <div id="result"></div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="slide slide-theme-warm">
+                <h2 class="title-sub">移除自己設下的限制</h2>
+                <div class="quote">不要給自己設限，就有突破的機會——<br>40% 法則</div>
+                <div class="key-points">
+                    <div class="point">追求人的無限可能性</div>
+                </div>
+            </section>
+
+            <section class="slide slide-theme-warm">
+                <h2 class="title-sub">心靈力量是可以磨練的</h2>
+                <div class="quote">從體能出發，磨練心智的繭皮</div>
+                <div class="key-points">
+                    <div class="point">保有懂得反省的人生</div>
+                </div>
+            </section>
+
+            <section class="slide slide-theme-warm">
+                <h2 class="title-sub">建立心理韌性的兩面性</h2>
+                <div class="quote">調整內心的方向，面對挑戰</div>
+                <div class="key-points">
+                    <div class="point">真心面對問題</div>
+                </div>
+            </section>
+
+            <section class="slide slide-theme-cover">
+                <div class="cover-page">
+                    <div class="cover-icon">🙏</div>
+                    <h1 class="cover-title">Thank You!</h1>
+                    <div class="cover-line"></div>
+                    <div class="cover-subtitle">我們每個人都有潛力，成為更了不起的人</div>
+                </div>
+            </section>
+    </div>
+    
+    <button class="nav-button" id="prevBtn" onclick="previousSlide()">◀</button>
+    <button class="nav-button" id="nextBtn" onclick="nextSlide()">▶</button>
+    <div class="slide-counter"><span id="currentSlide">1</span> / 8</div>
+    
+    <script>
+        let currentSlideIndex = 0;
+        const slides = document.querySelectorAll('.slide');
+        const counter = document.getElementById('currentSlide');
+        
+        function showSlide(index) {
+            slides.forEach(s => s.classList.remove('active'));
+            slides[index].classList.add('active');
+            counter.textContent = index + 1;
+            
+            // Handle video autoplay logic if needed (simplified from original)
+            const iframe = slides[index].querySelector('iframe');
+            if (iframe) {
+                // iframe.src += '?autoplay=1'; // Basic autoplay handling
+            }
+
+            // Button Visibility
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            if (prevBtn) prevBtn.style.display = index === 0 ? 'none' : 'block';
+            if (nextBtn) nextBtn.style.display = index === slides.length - 1 ? 'none' : 'block';
+        }
+        
+        function nextSlide() {
+            if (currentSlideIndex < slides.length - 1) {
+                currentSlideIndex++;
+                showSlide(currentSlideIndex);
+            }
+        }
+        
+        function previousSlide() {
+            if (currentSlideIndex > 0) {
+                currentSlideIndex--;
+                showSlide(currentSlideIndex);
+            }
+        }
+        
+        document.addEventListener('keydown', (e) => {
+            if (e.target.tagName.toLowerCase() === 'textarea' || e.target.tagName.toLowerCase() === 'input') return;
+            if (['ArrowRight', 'ArrowDown', ' ', 'PageDown'].includes(e.key)) nextSlide();
+            if (['ArrowLeft', 'ArrowUp', 'PageUp'].includes(e.key)) previousSlide();
+        });
+
+        // Grouping Logic
+        function randomizeGroups() {
+            const namesInput = document.getElementById('names').value.trim();
+            const groupCount = parseInt(document.getElementById('groups').value);
+            if (!namesInput || groupCount < 1) return alert('請輸入資訊');
+            
+            // Fix regex split logic: split by newline (handling standard JS string escaping)
+            const names = namesInput.split(/\n/).map(n => n.trim()).filter(n => n);
+            if (names.length < groupCount) return alert('人數少於組數');
+            
+            const shuffled = [...names];
+            for (let i = shuffled.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+            }
+            
+            const groups = Array.from({ length: groupCount }, () => []);
+            shuffled.forEach((name, index) => groups[index % groupCount].push(name));
+            
+            const resultDiv = document.getElementById('result');
+            resultDiv.innerHTML = groups.map((g, i) => `
+                <div class="group-card">
+                    <div class="group-title">第 ${i + 1} 組 (${g.length}人)</div>
+                    <div>${g.join(' • ')}</div>
+                </div>
+            `).join('');
+        }
+        
+        function clearAll() {
+            document.getElementById('names').value = '';
+            document.getElementById('result').innerHTML = '';
+        }
+    </script>
+    <script>showSlide(0);</script>
+</body>
+</html>
